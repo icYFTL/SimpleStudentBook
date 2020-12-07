@@ -8,18 +8,15 @@
         </div>
         <div class="main">
             <div class="btn-group switcher" role="group">
-                <button type="button" @click="is_institute_auth = 0" class="btn btn-default"
-                        v-bind:class="{'switcher_active': is_institute_auth === 0}">Institute
+                <button type="button" @click="changeModule('institute')" class="btn btn-default"
+                        v-bind:class="{'switcher_active': computeModule[1] === 0}">Institute
                 </button>
-                <button type="button" @click="is_institute_auth = 1" class="btn btn-default"
-                        v-bind:class="{'switcher_active': is_institute_auth === 1 }">Special
+                <button type="button" @click="changeModule('special_login')" class="btn btn-default"
+                        v-bind:class="{'switcher_active': computeModule[1] === 1}">Special
                 </button>
             </div>
-            <!-- Probably not the best solution use numbers -->
-            <InstituteLogin v-if="is_institute_auth === 0"></InstituteLogin>
-            <SpecialLogin v-if="is_institute_auth === 1"></SpecialLogin>
-            <SignUpSpecial v-if="is_institute_auth === 2"></SignUpSpecial>
-            <a style="margin-top: 10px" href="#" v-on:click="is_institute_auth = 2" v-if="is_institute_auth !== 2">Sign
+          <component v-bind:is="computeModule[0]"></component>
+            <a style="margin-top: 10px" href="#" v-on:click="changeModule('special_signup')" v-if="computeModule[1] !== 2">Sign
                 UP</a>
 
         </div>
@@ -37,13 +34,30 @@
         components: {SignUpSpecial, SpecialLogin, InstituteLogin},
         data() {
             return {
-                is_institute_auth: 0,
+                choice: 0,
                 app_name: "Project X",
                 login_page_description: "Make world better!"
-
             }
         },
-        methods: {}
+      methods: {
+          changeModule: function (moduleName){
+            if (moduleName === "institute"){
+              this.$store.commit('change_login_module', InstituteLogin)
+              return;
+            }
+            if (moduleName === 'special_login'){
+              this.$store.commit('change_login_module', SpecialLogin)
+              return;
+            }
+            if (moduleName === 'special_signup')
+              this.$store.commit('change_login_module', SignUpSpecial)
+          }
+      },
+        computed: {
+          computeModule: function (){
+            return this.$store.state.current_login_module;
+          }
+        }
     }
 
 
@@ -79,7 +93,7 @@
     .sidenav {
         height: 100%;
         background-color: #000;
-        overflow-x: hidden;
+        overflow: hidden;
         padding-top: 20px;
     }
 
@@ -91,6 +105,8 @@
         justify-content: center;
         margin-top: -12%;
         padding: 0 10px;
+        overflow: hidden;
+
     }
 
     @media screen and (max-height: 700px) and (max-width: 768px) {

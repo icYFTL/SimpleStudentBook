@@ -17,12 +17,13 @@
 <style lang="scss" scoped>
     //Colors
     $default: #fff;
+    $background: #171717;
     .profile{
         display: flex;
         flex-flow: column nowrap;
         width: 100%;
         height: 100%;
-        background-color: #171717;
+        background-color: $background;
         color: $default;
     }
     .upper-space{

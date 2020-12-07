@@ -1,58 +1,61 @@
 <template>
-    <div class="col-md-6 col-sm-12">
-        <div class="special-login-form">
-            <form @submit.prevent="auth">
-                <div class="form-group">
-                    <input required type="text" class="form-control" placeholder="Username" v-model="login">
-                </div>
-                <div class="form-group">
-                    <input required type="password" class="form-control" placeholder="Password" v-model="password">
-                </div>
-                <div class="form-group">
-                    <label class="form-control">
-                        <input type="checkbox" v-model="save_checked"/>
-                        Keep password?
-                    </label>
-                </div>
-                <button type="submit" v-on:click="auth" class="btn btn-black">Submit</button>
-            </form>
+  <div class="col-md-6 col-sm-12">
+    <div class="special-login-form">
+      <form @submit.prevent="auth">
+        <div class="form-group">
+          <input required type="text" class="form-control" placeholder="Username" v-model="login">
         </div>
+        <div class="form-group">
+          <input required type="password" class="form-control" placeholder="Password" v-model="password">
+        </div>
+        <button type="submit" class="btn btn-black">Submit</button>
+      </form>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "SpecialLogin",
-        data() {
-            return {
-                login: '',
-                password: '',
-                save_checked: false
-            }
-        },
-        methods: {
-            auth: function () {
-                this.$store.dispatch('login', {
-                    'login': this.login,
-                    'password': this.password
+import deleteAllCookies from "@/utils";
 
-                })
-                    .then(() => {
-                        this.$store.commit('auth_success', true, this.login)
-                        this.$router.push('/')
-                    })
-                    .catch(err => console.log(err))
-            }
-        }
+export default {
+  name: "SpecialLogin",
+  data() {
+    return {
+      login: '',
+      password: ''
     }
+  },
+  methods: {
+    auth: function () {
+      this.$store.dispatch('login', {
+        'username': this.login,
+        'password': this.password,
+        'auth_type': 'special'
+      }).then(() => {
+            if (this.$store.getters.isLoggedIn) {
+              this.$router.push('/');
+            } else if (this.$store.state.error) {
+              this.$toast.error(this.$store.state.error);
+              deleteAllCookies();
+            } else
+              throw new Error('EVERYTHING IS BAD');
+          })
+          .catch((err) => {
+            this.$toast.warning('Something went wrong. Try to reload the page.')
+            deleteAllCookies();
+            console.log(err)
+          })
+    }
+  }
+}
 
 </script>
 
 <style scoped>
-    .btn-black {
-        background-color: #000 !important;
-        color: #fff !important;
-        width: 50%;
-    }
+.btn-black {
+  background-color: #000 !important;
+  color: #fff !important;
+  width: 50%;
+}
 
 </style>

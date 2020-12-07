@@ -18,9 +18,10 @@
     import MenuContent from "./MenuContent";
 
     import Profile from "../../modules/Profile";
-    import Tasks from "../../modules/Tasks";
     import Settings from "../../modules/Settings";
     import Rating from "../../modules/Rating";
+    import Logout from "@/components/modules/Logout";
+    import Book from "@/components/modules/Book";
 
     export default {
         name: "Menu",
@@ -31,7 +32,6 @@
             },
 
             construct_menu: function () {
-                console.warn(this.$store.state.menu_content)
                 if (this.$store.state.menu_content === null)
                     this.$store.state.menu_content = [
                         {
@@ -40,8 +40,8 @@
                             "is_active": true
                         },
                         {
-                            "title": "Tasks",
-                            "module": Tasks,
+                            "title": "Book",
+                            "module": Book,
                             "is_active": false
                         },
                         {
@@ -53,7 +53,12 @@
                             "title": "Settings",
                             "module": Settings,
                             "is_active": false
-                        }
+                        },
+                      {
+                        "title": "Logout",
+                        "module": Logout,
+                        "is_active": false
+                      }
                     ];
 
                 return this.$store.state.menu_content;

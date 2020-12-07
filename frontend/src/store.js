@@ -3,81 +3,142 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import Home from "./components/modules/Profile";
 //import menu from "./configs/menu.json"
+import deleteAllCookies from "@/utils";
+import InstituteLogin from "@/components/login-src/InstituteLogin";
+import SpecialLogin from "@/components/login-src/SpecialLogin";
+import SignUpSpecial from "@/components/sign-up-src/SignUpSpecial";
 
 Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
-        status: '',
-        token: localStorage.getItem('token') || '',
+        loginState: false,
+        signUpState: false,
+        error: "",
         user: {},
         current_module: Home,
+        current_login_module: [InstituteLogin, 0],
         is_menu_opened: false,
         menu_content: null,
-        api_host: 'https://icyftl.ru/px'
+        api_host: 'http://localhost:8000'
     },
     mutations: {
         change_module(state, new_module) {
             state.current_module = new_module;
         },
-        change_active_module(state, module_name){
+        change_active_module(state, module_name) {
             state.menu_content.forEach(function (item, i, arr) {
                 arr[i].is_active = item.title === module_name;
             })
         },
-        toggle_menu(state){
+        change_login_module(state, new_module){
+            let num = 0;
+            if (new_module === SpecialLogin)
+                num = 1;
+            else
+                if (new_module === SignUpSpecial)
+                num = 2;
+            state.current_login_module = [new_module, num];
+        },
+        toggle_menu(state) {
             state.is_menu_opened = !state.is_menu_opened;
         },
-        set_menu_items(state, items){
-          state.menu_content = items;
+        set_menu_items(state, items) {
+            state.menu_content = items;
         },
-        auth_request(state) {
-            state.status = 'loading'
-        },
-        auth_success(state, token, user) {
-            state.status = 'success'
-            state.token = token
+        auth_state(state, status, user) {
+            state.loginState = status
             state.user = user
         },
-        auth_error(state) {
-            state.status = 'error'
-        },
         logout(state) {
-            state.status = ''
-            state.token = ''
+            state.loginState = false;
+        },
+        signup_state(state, status) {
+            state.signUpState = status
+        },
+        set_user(state, user){
+            state.user = user;
         }
     },
     getters: {
-        isLoggedIn: state => state.token, //!!state.token, /// Temporary
-        authStatus: state => state.status,
+        isLoggedIn: state => state.loginState,
+        isSignedUp: state => state.signUpState
     },
     actions: {
         login({commit}, user) {
             return new Promise((resolve) => {
-                commit('auth_request')
-                axios({url: 'http://localhost:3000/login', data: user, method: 'POST'})
+                let requestData = {
+                    'method': 'auth'
+                }
+                Object.assign(requestData, user);
+                axios({url: this.state.api_host, data: requestData, method: 'POST', withCredentials: true})
                     .then(resp => {
-                        const token = resp.data.token
-                        const user = resp.data.user
-                        localStorage.setItem('token', token)
-                        axios.defaults.headers['Authorization'] = token
-                        commit('auth_success', token, user)
-                        resolve(resp)
+                        const reply = resp.data;
+                        if (reply.status) {
+                            commit('auth_state', true, reply)
+                            resolve(resp)
+                        } else
+                            throw new Error(reply.error);
                     })
-                    .catch(() => {
-                        commit('auth_error')
-                        localStorage.removeItem('token')
-                        //reject(err)
-                        resolve(); // Because I don't have backend yet
+                    .catch((err) => {
+                        this.state.error = err.toString();
+                        commit('auth_state', false, {})
+                        resolve(err);
                     })
             })
         },
         logout({commit}) {
             return new Promise((resolve) => {
-                commit('logout')
-                localStorage.removeItem('token')
-                delete axios.defaults.headers['Authorization']
-                resolve()
+                deleteAllCookies();
+                axios({url: this.state.api_host, data: {'method': 'logout'}, withCredentials: true, method: 'POST'})
+                    .then(resp => {
+                        commit('logout')
+                        resolve(resp)
+                    })
+                    .catch((err) => {
+                        resolve(err);
+                    })
+            })
+        },
+        signup({commit},user) {
+            return new Promise((resolve) => {
+                let requestData = {
+                    'method': 'signup'
+                }
+                Object.assign(requestData, user);
+                axios({url: this.state.api_host, data: requestData, method: 'POST', withCredentials: true})
+                    .then(resp => {
+                        const reply = resp.data;
+                        if (reply.status) {
+                            commit('signup_state', true)
+                            commit('change_login_module', SpecialLogin)
+                            resolve(resp)
+                        } else
+                            throw new Error(reply.error);
+                    })
+                    .catch((err) => {
+                        this.state.error = err.toString();
+                        commit('signup_state', false)
+                        resolve(err);
+                    })
+            })
+        },
+        getUser({commit}){
+            return new Promise((resolve) => {
+                axios({url: this.state.api_host + '/?method=getUser', method: 'GET', withCredentials: true})
+                    .then(resp => {
+                        const reply = resp.data;
+                        if (reply.status) {
+                            commit('set_user', reply)
+                            resolve(resp)
+                        } else
+                            throw new Error(reply.error);
+                    })
+                    .catch((err) => {
+                        this.state.error = err.toString();
+                        resolve(err);
+                    })
             })
         }
+
     }
 })

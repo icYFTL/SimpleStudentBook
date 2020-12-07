@@ -10,6 +10,8 @@ import Router from "vue-router";
 import store from "./store"
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import VueCookies from 'vue-cookies'
+
 
 Vue.use(Vuex)
 Vue.use(Axios)
@@ -17,14 +19,11 @@ Vue.use(BootstrapVue)
 //Vue.use(IconsPlugin)
 Vue.use(Toast)
 Vue.use(Router)
-
+Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios;
-const token = localStorage.getItem('token') // Still unused actions
 
-if (token)
-    Vue.prototype.$http.defaults.headers.common['Authorization'] = token // Still unused actions
 
 new Vue({
     render: h => h(App),
