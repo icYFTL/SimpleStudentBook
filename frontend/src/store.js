@@ -3,10 +3,10 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import Home from "./components/modules/Profile";
 //import menu from "./configs/menu.json"
+import InstituteLogin from "@/components/modules/login-src/InstituteLogin";
+import SpecialLogin from "@/components/modules/login-src/SpecialLogin";
+import SignUpSpecial from "@/components/modules/sign-up-src/SignUpSpecial";
 import deleteAllCookies from "@/utils";
-import InstituteLogin from "@/components/login-src/InstituteLogin";
-import SpecialLogin from "@/components/login-src/SpecialLogin";
-import SignUpSpecial from "@/components/sign-up-src/SignUpSpecial";
 
 Vue.use(Vuex)
 export default new Vuex.Store({
@@ -16,10 +16,11 @@ export default new Vuex.Store({
         error: "",
         user: {},
         current_module: Home,
+        current_module_params: {},
         current_login_module: [InstituteLogin, 0],
         is_menu_opened: false,
         menu_content: null,
-        api_host: 'http://localhost:8000'
+        api_host: 'http://sbackend:8000'
     },
     mutations: {
         change_module(state, new_module) {
@@ -30,12 +31,11 @@ export default new Vuex.Store({
                 arr[i].is_active = item.title === module_name;
             })
         },
-        change_login_module(state, new_module){
+        change_login_module(state, new_module) {
             let num = 0;
             if (new_module === SpecialLogin)
                 num = 1;
-            else
-                if (new_module === SignUpSpecial)
+            else if (new_module === SignUpSpecial)
                 num = 2;
             state.current_login_module = [new_module, num];
         },
@@ -51,11 +51,19 @@ export default new Vuex.Store({
         },
         logout(state) {
             state.loginState = false;
+            state.signUpState = false;
+            state.error = "";
+            state.user = {};
+            state.current_module = Home;
+            state.current_login_module = [InstituteLogin, 0];
+            state.is_menu_opened = false;
+            state.menu_content = null;
+            state.current_module_params = {};
         },
         signup_state(state, status) {
             state.signUpState = status
         },
-        set_user(state, user){
+        set_user(state, user) {
             state.user = user;
         }
     },
@@ -87,8 +95,8 @@ export default new Vuex.Store({
             })
         },
         logout({commit}) {
+            deleteAllCookies();
             return new Promise((resolve) => {
-                deleteAllCookies();
                 axios({url: this.state.api_host, data: {'method': 'logout'}, withCredentials: true, method: 'POST'})
                     .then(resp => {
                         commit('logout')
@@ -99,7 +107,7 @@ export default new Vuex.Store({
                     })
             })
         },
-        signup({commit},user) {
+        signup({commit}, user) {
             return new Promise((resolve) => {
                 let requestData = {
                     'method': 'signup'
@@ -122,7 +130,7 @@ export default new Vuex.Store({
                     })
             })
         },
-        getUser({commit}){
+        getUser({commit}) {
             return new Promise((resolve) => {
                 axios({url: this.state.api_host + '/?method=getUser', method: 'GET', withCredentials: true})
                     .then(resp => {

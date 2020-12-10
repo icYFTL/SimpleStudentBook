@@ -1,8 +1,12 @@
 <template>
     <nav class="nav" ref="nav">
         <ul class="nav__list" ref="nav_list">
-            <li class="nav__item" v-for="(item, idx) in items" :key="idx"><a v-on:click="menu_click(item)"
-                                                                             v-bind:class="item.is_active ? 'is-active' : ''">{{item.title}}</a>
+            <li class="nav__item" v-for="(item, idx) in items" :key="idx">
+              <a v-on:click="menu_click(item)"
+                 v-bind:class="item.is_active ? 'is-active' : ''"
+              >
+                {{item.title}}
+              </a>
             </li>
         </ul>
     </nav>

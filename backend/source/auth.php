@@ -19,9 +19,9 @@ class Authorization
         $user = null;
 
         if ($type === 'institute')
-            $user = $this->db->getUser($id, null);
+            $user = $this->db->getStudent($id, null);
         elseif ($type === 'special')
-            $user = $this->db->getUser(null, $username);
+            $user = $this->db->getStudent(null, $username);
         else
             return false;
 
@@ -67,6 +67,7 @@ class Authorization
             if ($this->db->isUserExists(null, $username))
                 return generate_error_callback('User already exists');
         }
+        if (strlen($password) < 7)  return generate_error_callback('Too short password');
         if (strlen($password) > 30) return generate_error_callback('Too long password');
 
         $password = password_hash($password, PASSWORD_BCRYPT);
@@ -80,5 +81,20 @@ class Authorization
         else return generate_error_callback('Invalid auth type');
 
         return generate_true_callback(array());
+    }
+
+    public function updatePassword($password){
+        if (strlen($password) < 7)  return generate_error_callback('Too short password');
+        if (strlen($password) > 30) return generate_error_callback('Too long password');
+
+        $user = $this->db->getStudent($_SESSION['id'], null);
+
+        if (password_verify($password, $user['password']))
+            return generate_error_callback('You can\'t change password on actual');
+        
+        $password = password_hash($password, PASSWORD_BCRYPT);
+        $this->db->updatePassword($_SESSION['id'], $password);
+
+        return generate_true_callback();
     }
 }

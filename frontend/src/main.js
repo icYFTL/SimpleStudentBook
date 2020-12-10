@@ -11,6 +11,9 @@ import store from "./store"
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import VueCookies from 'vue-cookies'
+import VueTableDynamic from 'vue-table-dynamic'
+import 'beegridtable/dist/styles/beegridtable.css';
+import VuePreloaders from 'vue-preloaders'
 
 
 Vue.use(Vuex)
@@ -20,10 +23,11 @@ Vue.use(BootstrapVue)
 Vue.use(Toast)
 Vue.use(Router)
 Vue.use(VueCookies)
+Vue.use(VueTableDynamic)
+Vue.use(VuePreloaders)
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true;
 Vue.prototype.$http = Axios;
-
 
 new Vue({
     render: h => h(App),

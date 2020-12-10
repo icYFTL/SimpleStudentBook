@@ -8,23 +8,27 @@
 export default {
   name: "Mark",
   props: {
-    mark: Number
+    mark: String
   },
   computed: {
     defineMark: function(){
       switch (this.mark){
-        case 1:
+        case "1":
           return 'worst';
-        case 2:
+        case "2":
           return 'bad';
-        case 3:
+        case "3":
           return 'passably';
-        case 4:
+        case "4":
           return 'good';
-        case 5:
+        case "5":
+          return 'best';
+        case "-":
+          return 'worst';
+        case "+":
           return 'best';
         default:
-          return 'none';
+          return 'undefined';
       }
     }
   }
@@ -35,7 +39,6 @@ export default {
 .mark {
   width: 30px;
   height: 30px;
-  margin: 4px;
   border-radius: 10px;
 }
 
@@ -68,5 +71,10 @@ export default {
 .best {
   background-color: green;
   color: whitesmoke;
+}
+
+.undefined {
+  background-color: lightslategray;
+  color: black;
 }
 </style>

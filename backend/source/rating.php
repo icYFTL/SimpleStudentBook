@@ -14,12 +14,13 @@ class Rating
 
     public function getGroupRating()
     {
-        $user = $this->db->getUser($this->id, null);
+        $user = $this->db->getStudent($this->id, null);
         return generate_true_callback($this->db->getGroupRating($user['group_id']));
     }
 
     public function getGlobalRating()
     {
+
         return generate_true_callback($this->db->getGlobalRating($this->id));
     }
 

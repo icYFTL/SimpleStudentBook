@@ -1,29 +1,35 @@
 <template>
   <div class="s-block">
-      <a class="s-name" href="#">{{name}}</a>
+      <p class="s-name">{{name}}</p>
       <hr>
-      <div class="s-teacher">
-        <p>Teacher: <a href="#">{{teacher}}</a></p>
+      <div class="s-info">
+        <i href="#">{{teacher}}</i>
+        <br>
+        <strong>{{type}}</strong>
       </div>
-      <div class="last-marks">
-        <div v-for="(item, idx) in marks" :key="idx">
-        <Mark :mark=item></Mark>
-        </div>
-      </div>
-
+    <b class="mark">{{mark}}</b>
   </div>
 </template>
 
 <script>
-import Mark from "@/components/common/Mark";
+import SubjectPage from "@/components/modules/book-src/SubjectPage";
+
 export default {
   name: "SubjectBlock",
-  components: {Mark},
   props: {
+    id: Number,
     name: String,
     teacher: String,
-    marks: Array
+    mark: Array,
+    type: String
+  },
+  methods:{
+    click: function (){
+      this.$store.state.current_module_params = {'id': this.id, 'name': this.name};
+      this.$store.commit('change_module', SubjectPage);
+    }
   }
+
 }
 </script>
 
@@ -31,40 +37,37 @@ export default {
   .s-block{
     width: 300px;
     height: 130px;
-    background: aquamarine;
+    background: #006b3e;
     margin: 30px;
     box-shadow: inset 0 0 6px black;
+    border-radius: 4px;
   }
   .s-block hr{
     display: block;
     border-style: inset;
     border-width: 1px;
     border-color: black;
-    margin-top: -5px;
+    margin-top: -3px;
   }
   .s-name {
-    font-size: 2.3em;
+    font-size: 1.3em;
     text-decoration: none;
-    color: cornflowerblue;
+    color: #84B8E3;
   }
 
-  .s-teacher {
+  .s-info {
+    width: 100%;
     font-size: 1.2em;
     float: left;
     color: black;
-    margin-top: -8px;
+    margin-top: 5px;
   }
-  .s-teacher a{
+  .s-info i strong{
+    align-self: center;
     font-size: 1em;
-    text-decoration: none;
     color: black;
   }
-  .last-marks{
-    display: flex;
-    flex-flow: row nowrap;
-    float: left;
-    height: 30px;
-    width: inherit;
-    margin-top: -15px;
+  .mark{
+    color: red;
   }
 </style>

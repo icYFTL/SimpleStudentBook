@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import deleteAllCookies from "@/utils";
 
 export default {
   name: "Logout",
   beforeCreate() {
-    deleteAllCookies();
+    this.$store.dispatch('logout');
     this.$router.push('/login');
   }
 }

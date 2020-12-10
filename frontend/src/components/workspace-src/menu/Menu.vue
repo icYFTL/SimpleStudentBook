@@ -1,4 +1,3 @@
-<!-- TODO: Recreate menu. -->
 <template>
     <div class="content">
         <div class="nav__bar">
@@ -6,9 +5,9 @@
                 <div class="bars"></div>
             </a>
         </div>
-        <transition name="slide-fade">
+      <transition name="slide-fade">
             <template v-if="this.$store.state.is_menu_opened">
-                <MenuContent :items=construct_menu()></MenuContent>
+                <MenuContent :items=construct_menu() style="z-index: 2"></MenuContent>
             </template>
         </transition>
     </div>
@@ -16,7 +15,6 @@
 
 <script>
     import MenuContent from "./MenuContent";
-
     import Profile from "../../modules/Profile";
     import Settings from "../../modules/Settings";
     import Rating from "../../modules/Rating";
@@ -62,20 +60,6 @@
                     ];
 
                 return this.$store.state.menu_content;
-                // this.menu_items_content.forEach(function (item, i, arr) {
-                //     try {
-                //         import("../../modules/" + item.title).then(result => {
-                //             arr[i].module = Vue.component(item.title,result);
-                //             console.warn(result)
-                //         });
-                //         console.log("imported " + item.title);
-                //     } catch (e) {
-                //         console.error(e);
-                //         arr[i].module = null;
-                //     }
-                // });
-                // return this.menu_items_content;
-                // TODO: Refactoring & Optimization
             }
         },
 

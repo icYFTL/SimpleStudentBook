@@ -12,10 +12,11 @@ header ("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
 header ("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Credentials: true");
 
+$db_methods = new DataBase();
+$user_methods = new User();
+$rating_methods = new Rating();
+
 if (isset($_GET['method'])) {
-    $db_methods = new DataBase();
-    $user_methods = new User();
-    $rating_methods = new Rating();
     switch ($_GET['method']) {
         case 'getInstitutesList':
             echo generate_true_callback($db_methods->getInstitutesList());
@@ -132,6 +133,20 @@ if (isset($_GET['method'])) {
                     }
                     else
                         die(generate_error_callback('Specify auth type'));
+                    break;
+                case 'updateSNP':
+                    if (!isset($data['name']) || !isset($data['surname']) || !isset($data['patronymic']))
+                        die(generate_error_callback('Invalid SNP credentials'));
+
+                    if (empty($data['name']) || empty($data['surname']) || empty($data['patronymic']))
+                        die(generate_error_callback('Invalid SNP credentials'));
+                    echo $user_methods->updateSNP($data['surname'], $data['name'], $data['patronymic']);
+                    break;
+                case 'updatePassword':
+                    if (!isset($data['password']) || empty($data['password']))
+                        die(generate_error_callback('Invalid password passed'));
+
+                    echo $auth->updatePassword($data['password']);
                     break;
             }
         }

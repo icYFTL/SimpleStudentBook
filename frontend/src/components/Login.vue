@@ -25,9 +25,9 @@
 
 <script>
 
-    import InstituteLogin from "@/components/login-src/InstituteLogin";
-    import SpecialLogin from "@/components/login-src/SpecialLogin";
-    import SignUpSpecial from "./sign-up-src/SignUpSpecial";
+    import InstituteLogin from "@/components/modules/login-src/InstituteLogin";
+    import SpecialLogin from "@/components/modules/login-src/SpecialLogin";
+    import SignUpSpecial from "./modules/sign-up-src/SignUpSpecial";
 
     export default {
         name: "Login",

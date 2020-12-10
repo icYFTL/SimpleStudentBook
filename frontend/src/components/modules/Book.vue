@@ -2,10 +2,13 @@
   <div class="book">
     <div class="block-search">
       <input type="text" placeholder="Subject name or teacher name" v-model="search">
+      <select v-model="semester_selected" @change="routine">
+        <option v-for="(item, idx) in semesters" :key="idx" v-bind:value="item">{{item}} semester</option>
+      </select>
     </div>
     <div class="s-blocks">
       <div v-for="(item, idx) in items" :key="idx">
-        <SubjectBlock :name=item.name :teacher=item.teacher :marks=item.marks></SubjectBlock>
+        <SubjectBlock :name=item.name :teacher=item.teacher :mark=item.mark :id=item.id :type=item.pass_type></SubjectBlock>
       </div>
     </div>
   </div>
@@ -20,24 +23,17 @@ export default {
   components: {SubjectBlock},
   data() {
     return {
-      "true_items": [
-        {'name': 'Math', 'teacher': 'Lol kek lolovich', 'marks': [4, 2, 2, 2, 3, 2 ,1]},
-        {'name': 'Rus', 'teacher': 'Haha its teacher', 'marks': [5, 3, 5, 2]},
-        {'name': 'OOP', 'teacher': 'Brab brab bras', 'marks': [1, 4, 5, 4]},
-        {'name': 'Rus', 'teacher': 'Haha its teacher', 'marks': [5, 3, 5, 2]},
-        {'name': 'OOP', 'teacher': 'Brab brab bras', 'marks': [1, 4, 5, 4]},
-        {'name': 'Rus', 'teacher': 'Haha its teacher', 'marks': [5, 3, 5, 2]},
-        {'name': 'OOP', 'teacher': 'Brab brab bras', 'marks': [1, 4, 5, 4]},
-
-      ],
+      "true_items": [],
       "items": [],
+      "semesters": [],
+      "semester_selected": 0,
       "search": ""
     }
   },
   methods: {
     getMarks: async function (){
       let _ = null;
-      await axios.get(this.$store.state.api_host + '?method=getStudentMarks').then((response) => {
+      await axios({url: this.$store.state.api_host + '?method=getStudentMarks', withCredentials: true, method: 'POST'}).then((response) => {
         _ = response.data.values;
       })
 
@@ -45,36 +41,47 @@ export default {
     },
     getSubjects: async function(){
       let _ = null;
-      await axios.get(this.$store.state.api_host + '?method=getGroupSubjects').then((response) => {
+      await axios({url: this.$store.state.api_host + '?method=getGroupSubjects', withCredentials: true, method: 'POST'}).then((response) => {
           _ = response.data.values;
       })
 
       return _;
     },
-    getMarksBySubject: function(marks, subject_id){
-      let _ = [];
-      marks.forEach(function (item) {
-        if (item.subject_id === subject_id)
-          _.push(item);
+    getMarkBySubject: function(marks, subject_id){
+      let _res = null;
+      marks.forEach((item) => {
+        if (item.subject_id === subject_id){
+          _res = item.mark;
+        }
       });
 
-      return _;
+      return _res;
+    },
+    routine: async function(){
+      this.true_items = [];
+      let mark = await this.getMarks();
+      let subjects = await this.getSubjects();
+
+      subjects.forEach((item) => {
+        if (!this.semesters.includes(item.semester))
+          this.semesters.push(item.semester);
+      });
+      if (this.semester_selected)
+        subjects.forEach((item) => {
+          if (item.semester === this.semester_selected)
+            this.true_items.push({
+              'name': item.name,
+              'teacher': item.t_snp,
+              'mark': this.getMarkBySubject(mark, item.id),
+              'pass_type': item.pass_type
+            });
+        })
+
+      this.items = this.true_items;
     }
   },
   async created() {
-    let marks = await this.getMarks();
-    let subjects = await this.getSubjects();
-    console.log(marks)
-    console.log(subjects)
-    subjects.forEach(function(item) {
-      this.true_items.push({
-        'name': item.name,
-        'teacher': 'non implemented',
-        'marks': this.getMarksBySubject(marks, item.id)
-      });
-    });
-
-    this.items = this.true_items;
+    await this.routine();
   },
   watch: {
     search: function (value) {
@@ -84,7 +91,7 @@ export default {
         return;
       }
       this.true_items.forEach((item) => {
-        if (item.name.toLowerCase().startsWith(value.toLowerCase()) || item.teacher.toLowerCase().includes(value.toLowerCase())){
+        if (item.name.toLowerCase().startsWith(value.trim().toLowerCase()) || item.teacher.toLowerCase().includes(value.trim().toLowerCase())){
           this.items.push(item);
         }
       })
@@ -114,6 +121,18 @@ $background: #171717;
 }
 
 .block-search input {
+  background: rgba(23, 23, 23, .6);
+  border: none;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  font-family: 'Caveat', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  padding: 10px 0;
+  outline: none;
+  width: 100%;
+}
+.block-search select {
   background: rgba(23, 23, 23, .6);
   border: none;
   border-bottom: 1px solid #fff;

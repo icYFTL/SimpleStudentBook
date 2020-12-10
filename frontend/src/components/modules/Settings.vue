@@ -1,16 +1,52 @@
 <template>
-    <div>
-        <h1>Settings</h1>
-        <h2>Not implemented</h2>
+  <div class="profile">
+    <div class="upper-space">
+      <StudentField :editable="isUserSNPed" class="student-field"></StudentField>
     </div>
+    <div class="items">
+    <ChangePassword></ChangePassword>
+    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "Settings"
+import StudentField from "@/components/modules/profile-src/StudentField";
+import ChangePassword from "@/components/modules/settings-src/ChangePassword";
+
+export default {
+  name: "Settings",
+  components: {ChangePassword, StudentField},
+  computed: {
+    isUserSNPed: function (){
+      return !this.$store.state.user.name || !this.$store.state.user.surname;
     }
+  }
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+//Colors
+$default: #fff;
+$background: #171717;
+
+.profile {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  height: 100%;
+  background-color: $background;
+  color: $default;
+}
+
+.upper-space {
+  margin-top: 10px;
+}
+
+.items {
+  display: flex;
+  align-items: flex-start;
+  flex-flow: row wrap;
+  justify-content: center;
+}
 
 </style>

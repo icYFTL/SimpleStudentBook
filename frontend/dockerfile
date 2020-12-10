@@ -1,0 +1,20 @@
+FROM ubuntu:18.04
+
+ARG APP_DIR=app
+RUN mkdir -p ${APP_DIR}
+WORKDIR ${APP_DIR}
+
+RUN sudo apt update
+RUN sudo apt install nodejs npm nginx
+RUN sudo systemctl enable nginx
+
+COPY . .
+RUN npm install --production
+RUN npm build
+
+RUN mkdir -p /var/www/ssb/
+RUN mv ./dist/* /var/www/ssb/
+RUN mv ./ssb.conf /etc/nginx/sites-available/ssb.conf
+RUN sudo ln -s /etc/nginx/sites-available/ssb.conf /etc/nginx/sites-enabled/ssb.conf
+RUN nginx -s reload
+

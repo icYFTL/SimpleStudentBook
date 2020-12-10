@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  frontend:
+    image: sfront
+    build: ./frontend
+    command: nginx -g daemon off
+    ports:
+      - 8080:8080
+    restart: always
+    depends_on:
+      - backend
+    network_mode: host
+
+  backend:
+    image: sbackend
+    build: ./backend
+    ports:
+      - 8000:8000
+    command: php -S localhost:8000
+    restart: always
