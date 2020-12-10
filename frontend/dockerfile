@@ -6,6 +6,7 @@ WORKDIR ${APP_DIR}
 
 RUN apt update
 RUN apt install curl -y
+RUN service nginx start
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
@@ -22,7 +23,9 @@ RUN mkdir -p /var/www/ssb/
 RUN mv ./dist/* /var/www/ssb/
 RUN mv ./ssb.conf /etc/nginx/sites-available/ssb.conf
 RUN ln -s /etc/nginx/sites-available/ssb.conf /etc/nginx/sites-enabled/ssb.conf
+RUN rm /etc/nginx/sites-enabled/default
 RUN rm /etc/nginx/sites-available/default
-RUN service nginx start
+RUN nginx -t
+RUN nginx -s reload
 
 
