@@ -11,7 +11,6 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
 RUN apt update
 RUN apt install nodejs nginx -y
-RUN service nginx start
 
 COPY package*.json ./
 RUN npm install
@@ -23,6 +22,6 @@ RUN mkdir -p /var/www/ssb/
 RUN mv ./dist/* /var/www/ssb/
 RUN mv ./ssb.conf /etc/nginx/sites-available/ssb.conf
 RUN ln -s /etc/nginx/sites-available/ssb.conf /etc/nginx/sites-enabled/ssb.conf
-RUN nginx -s reload
+RUN service nginx start
 
 
