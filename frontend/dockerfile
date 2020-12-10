@@ -5,7 +5,7 @@ RUN mkdir -p ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 RUN apt update
-RUN apt install nodejs npm nginx
+RUN apt install nodejs npm nginx -y
 RUN systemctl enable nginx
 
 COPY . .
