@@ -4,8 +4,9 @@ ARG APP_DIR=app
 RUN mkdir -p ${APP_DIR}
 WORKDIR ${APP_DIR}
 
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
 RUN apt update
-RUN apt install nodejs npm nginx -y
+RUN apt install nodejs nginx -y
 
 COPY package*.json ./
 RUN npm install
