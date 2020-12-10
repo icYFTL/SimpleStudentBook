@@ -4,6 +4,10 @@ ARG APP_DIR=app
 RUN mkdir -p ${APP_DIR}
 WORKDIR ${APP_DIR}
 
+RUN apt-get purge apache2 apache2-utils apache2.2-bin apache2-common
+RUN apt-get autoremove
+RUN rm -rf /etc/apache2
+
 RUN apt update
 RUN apt install curl -y
 
