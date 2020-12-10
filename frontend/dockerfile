@@ -22,6 +22,7 @@ RUN mkdir -p /var/www/ssb/
 RUN mv ./dist/* /var/www/ssb/
 RUN mv ./ssb.conf /etc/nginx/sites-available/ssb.conf
 RUN ln -s /etc/nginx/sites-available/ssb.conf /etc/nginx/sites-enabled/ssb.conf
+RUN rm /etc/nginx/sites-available/default
 RUN service nginx start
 
 
