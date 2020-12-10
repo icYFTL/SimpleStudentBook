@@ -4,10 +4,6 @@ ARG APP_DIR=app
 RUN mkdir -p ${APP_DIR}
 WORKDIR ${APP_DIR}
 
-RUN apt-get purge apache2 apache2-utils apache2.2-bin apache2-common
-RUN apt-get autoremove
-RUN rm -rf /etc/apache2
-
 RUN apt update
 RUN apt install curl -y
 
@@ -26,5 +22,5 @@ RUN mkdir -p /var/www/ssb/
 RUN mv ./dist/* /var/www/ssb/
 RUN mv ./ssb.conf /etc/nginx/sites-available/ssb.conf
 RUN ln -s /etc/nginx/sites-available/ssb.conf /etc/nginx/sites-enabled/ssb.conf
-RUN nginx -s reload
+
 
