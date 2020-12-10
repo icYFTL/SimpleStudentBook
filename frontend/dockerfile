@@ -6,12 +6,12 @@ WORKDIR ${APP_DIR}
 
 RUN apt update
 RUN apt install curl -y
-RUN service nginx start
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
 RUN apt update
 RUN apt install nodejs nginx -y
+RUN service nginx start
 
 COPY package*.json ./
 RUN npm install
