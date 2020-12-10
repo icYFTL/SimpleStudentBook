@@ -9,7 +9,7 @@ RUN apt install nodejs npm nginx -y
 
 COPY . .
 RUN npm install --production
-RUN npm build
+RUN npm run build
 
 RUN mkdir -p /var/www/ssb/
 RUN mv ./dist/* /var/www/ssb/
