@@ -8,7 +8,7 @@ let router = new Router({
     mode: 'history',
     routes: [
         {
-            path: '/ssb/',
+            path: '/',
             name: 'app',
             component: WorkSpace,
             meta: {
@@ -17,7 +17,7 @@ let router = new Router({
             }
         },
         {
-            path: '/ssb/login',
+            path: '/login',
             name: 'login',
             component: Login,
             meta: {
@@ -32,7 +32,6 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth))
         if (store.getters.isLoggedIn)
             next()
-
         else
             next('/login')
     else
