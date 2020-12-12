@@ -9,7 +9,7 @@ require_once 'source/user.php';
 require_once 'source/rating.php';
 
 session_start();
-header ("Access-Control-Allow-Origin: https://icyftl.ru");
+header ("Access-Control-Allow-Origin: https://ssb.icyftl.ru");
 header ("Access-Control-Expose-Headers: Content-Length, X-JSON");
 header ("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
 header ("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
