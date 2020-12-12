@@ -9,7 +9,7 @@ let router = new Router({
     mode: 'history',
     routes: [
         {
-            path: '/',
+            path: '/ssb',
             name: 'app',
             component: WorkSpace,
             meta: {
@@ -18,7 +18,7 @@ let router = new Router({
             }
         },
         {
-            path: '/login',
+            path: '/ssb/login',
             name: 'login',
             component: Login,
             meta: {
@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
         if(store.getters.isLoggedIn)
             next()
         else
-            next('/login')
+            next('/ssb/login')
     else
         next()
 

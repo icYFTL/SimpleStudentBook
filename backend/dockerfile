@@ -5,3 +5,4 @@ RUN mkdir -p ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 COPY . .
+RUN mv php.ini /usr/local/etc/php/php.ini
