@@ -1,4 +1,7 @@
 <?php
+
+error_reporting(E_ERROR | E_PARSE);
+
 require_once 'source/database.php';
 require_once 'source/auth.php';
 require_once 'source/utils.php';
