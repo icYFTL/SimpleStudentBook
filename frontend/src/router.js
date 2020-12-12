@@ -9,7 +9,7 @@ let router = new Router({
     mode: 'history',
     routes: [
         {
-            path: '/ssb',
+            path: '/ssb/',
             name: 'app',
             component: WorkSpace,
             meta: {
@@ -30,11 +30,15 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title
-    if (to.matched.some(record => record.meta.requiresAuth))
-        if(store.getters.isLoggedIn)
-            next()
+    if (to.matched.some(record => record.meta.requiresAuth)){
+        console.log(to);
+        if(store.getters.isLoggedIn){
+            next('/ssb' + to.path.replace('/ssb', '')) // i am the best
+
+        }
         else
             next('/ssb/login')
+    }
     else
         next()
 
