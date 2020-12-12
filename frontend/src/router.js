@@ -4,7 +4,6 @@ import Login from './components/Login'
 import WorkSpace from "./components/WorkSpace";
 
 
-
 let router = new Router({
     mode: 'history',
     routes: [
@@ -30,15 +29,12 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title
-    if (to.matched.some(record => record.meta.requiresAuth)){
-        console.log(to);
-        if(store.getters.isLoggedIn){
-            next('/ssb' + to.path.replace('/ssb', '')) // i am the best
+    if (to.matched.some(record => record.meta.requiresAuth))
+        if (store.getters.isLoggedIn)
+            next()
 
-        }
         else
-            next('/ssb/login')
-    }
+            next('/login')
     else
         next()
 
