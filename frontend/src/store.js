@@ -19,7 +19,7 @@ export default new Vuex.Store({
         current_login_module: [InstituteLogin, 0],
         is_menu_opened: false,
         menu_content: null,
-        api_host: 'http://localhost:8000'//'https://icyftl.ru/ssb_api'
+        api_host: 'https://icyftl.ru/ssb_api'
     },
     mutations: {
         change_module(state, new_module) {
