@@ -1,7 +1,7 @@
 import Router from 'vue-router'
 import store from './store.js'
 import Login from './components/Login'
-import WorkSpace from "./components/WorkSpace";
+import WorkSpace from "./components/modules/WorkSpace";
 
 
 let router = new Router({

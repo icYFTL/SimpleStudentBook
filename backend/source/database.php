@@ -100,9 +100,9 @@ class DataBase
     {
         $user = null;
         if ($id)
-            $user = $this->conn->query("SELECT * FROM teacher WHERE id={$id};")->fetchArray(SQLITE3_ASSOC);
+            $user = $this->conn->query("SELECT * FROM teachers WHERE id={$id};")->fetchArray(SQLITE3_ASSOC);
         if ($username)
-            $user = $this->conn->query("SELECT * FROM teacher WHERE username='{$username}';")->fetchArray(SQLITE3_ASSOC);
+            $user = $this->conn->query("SELECT * FROM teachers WHERE username='{$username}';")->fetchArray(SQLITE3_ASSOC);
 
         return $user;
     }

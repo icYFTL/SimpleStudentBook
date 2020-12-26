@@ -15,9 +15,9 @@
 
 <script>
     import MenuContent from "./MenuContent";
-    import Profile from "../../modules/Profile";
-    import Settings from "../../modules/Settings";
-    import Rating from "../../modules/Rating";
+    import Profile from "../../Profile";
+    import Settings from "../../Settings";
+    import Rating from "../../Rating";
     import Logout from "@/components/modules/Logout";
     import Book from "@/components/modules/Book";
 

@@ -25,15 +25,29 @@ class Authorization
         else
             return false;
 
+        $role = 'student';
+
+
+        //strange code section. Could be undefined behaviour
+
+        if (!$user){
+            $user = $this->db->getTeacher(null, $username);
+            if ($user)
+                $role = 'teacher';
+        }
+
         if ($user) {
             if (password_verify($password, $user['password'])) {
                 $_SESSION['status'] = true;
                 $_SESSION['id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $role;
                 return json_encode(array(
                     'status' => true,
                     'id' => $user['id'],
-                    'username' => $user['username']
+                    'username' => $user['username'],
+                    'token' => session_id(),
+                    'role' => $role
                 ));
             }
         }
@@ -67,7 +81,7 @@ class Authorization
             if ($this->db->isUserExists(null, $username))
                 return generate_error_callback('User already exists');
         }
-        if (strlen($password) < 7)  return generate_error_callback('Too short password');
+        if (strlen($password) < 7) return generate_error_callback('Too short password');
         if (strlen($password) > 30) return generate_error_callback('Too long password');
 
         $password = password_hash($password, PASSWORD_BCRYPT);
@@ -83,15 +97,16 @@ class Authorization
         return generate_true_callback(array());
     }
 
-    public function updatePassword($password){
-        if (strlen($password) < 7)  return generate_error_callback('Too short password');
+    public function updatePassword($password)
+    {
+        if (strlen($password) < 7) return generate_error_callback('Too short password');
         if (strlen($password) > 30) return generate_error_callback('Too long password');
 
         $user = $this->db->getStudent($_SESSION['id'], null);
 
         if (password_verify($password, $user['password']))
             return generate_error_callback('You can\'t change password on actual');
-        
+
         $password = password_hash($password, PASSWORD_BCRYPT);
         $this->db->updatePassword($_SESSION['id'], $password);
 

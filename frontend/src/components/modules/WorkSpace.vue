@@ -10,7 +10,7 @@
 <script>
     import Menu from "./workspace-src/menu/Menu";
     import ModuleView from "./workspace-src/ModuleView";
-    import Home from "./modules/Profile";
+    import Home from "./Profile";
 
     export default {
         name: "WorkSpace",

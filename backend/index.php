@@ -8,12 +8,15 @@ require_once 'source/utils.php';
 require_once 'source/user.php';
 require_once 'source/rating.php';
 
+ini_set("session.gc_maxlifetime", 3600);
+
 session_start();
 header ("Access-Control-Allow-Origin: https://ssb.icyftl.ru");
 header ("Access-Control-Expose-Headers: Content-Length, X-JSON");
 header ("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
 header ("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Credentials: true");
+
 
 $db_methods = new DataBase();
 $user_methods = new User();

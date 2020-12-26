@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import Home from "./components/modules/Profile";
-//import menu from "./configs/menu.json"
 import InstituteLogin from "@/components/modules/login-src/InstituteLogin";
 import SpecialLogin from "@/components/modules/login-src/SpecialLogin";
 import SignUpSpecial from "@/components/modules/sign-up-src/SignUpSpecial";
@@ -20,7 +19,7 @@ export default new Vuex.Store({
         current_login_module: [InstituteLogin, 0],
         is_menu_opened: false,
         menu_content: null,
-        api_host: 'https://icyftl.ru/ssb_api'
+        api_host: 'http://localhost:8000'//'https://icyftl.ru/ssb_api'
     },
     mutations: {
         change_module(state, new_module) {
@@ -82,8 +81,10 @@ export default new Vuex.Store({
                     .then(resp => {
                         const reply = resp.data;
                         if (reply.status) {
-                            commit('auth_state', true, reply)
-                            resolve(resp)
+                            commit('auth_state', true, reply);
+                            if (!document.cookie.includes('PHPSESSID') && reply.token)
+                                document.cookie += 'PHPSESSID=' + reply.token + ';'
+                            resolve(resp);
                         } else
                             throw new Error(reply.error);
                     })

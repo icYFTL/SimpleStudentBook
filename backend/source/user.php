@@ -29,7 +29,10 @@ class User
     }
 
     public function getUser(){
-        return generate_true_callback($this->db->getStudent($this->id, null));
+        $result = $this->db->getStudent($this->id, null);
+        unset($result['password']);
+
+        return generate_true_callback($result);
     }
 
     public function getSubjects(){

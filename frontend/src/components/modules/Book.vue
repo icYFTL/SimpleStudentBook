@@ -66,6 +66,8 @@ export default {
         if (!this.semesters.includes(item.semester))
           this.semesters.push(item.semester);
       });
+      if (this.semester_selected === 0)
+        this.semester_selected = this.semesters[0];
       if (this.semester_selected)
         subjects.forEach((item) => {
           if (item.semester === this.semester_selected)
@@ -119,6 +121,7 @@ $background: #171717;
   justify-content: center;
   background-color: inherit;
 }
+
 
 .block-search input {
   background: rgba(23, 23, 23, .6);
