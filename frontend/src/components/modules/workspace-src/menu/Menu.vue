@@ -33,27 +33,27 @@
                 if (this.$store.state.menu_content === null)
                     this.$store.state.menu_content = [
                         {
-                            "title": "Me",
+                            "title": "Профиль",
                             "module": Profile,
                             "is_active": true
                         },
                         {
-                            "title": "Book",
+                            "title": "Книга",
                             "module": Book,
                             "is_active": false
                         },
                         {
-                            "title": "Rating",
+                            "title": "Рейтинг",
                             "module": Rating,
                             "is_active": false
                         },
                         {
-                            "title": "Settings",
+                            "title": "Настройки",
                             "module": Settings,
                             "is_active": false
                         },
                       {
-                        "title": "Logout",
+                        "title": "Выход",
                         "module": Logout,
                         "is_active": false
                       }

@@ -1,9 +1,9 @@
 <template>
   <div class="book">
     <div class="block-search">
-      <input type="text" placeholder="Subject name or teacher name" v-model="search">
+      <input type="text" placeholder="Название предмета или ФИО преподавателя" v-model="search">
       <select v-model="semester_selected" @change="routine">
-        <option v-for="(item, idx) in semesters" :key="idx" v-bind:value="item">{{item}} semester</option>
+        <option v-for="(item, idx) in semesters" :key="idx" v-bind:value="item">{{item}} семестр</option>
       </select>
     </div>
     <div class="s-blocks">

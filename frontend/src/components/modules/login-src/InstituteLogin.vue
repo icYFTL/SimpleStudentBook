@@ -6,26 +6,26 @@
           <model-select required ref="inst_select"
                         :options="inst_options"
                         v-model="institute"
-                        placeholder="Institute"
+                        placeholder="Институт"
           />
         </div>
         <div class="form-group" v-on:focus="get_groups">
           <model-select required ref="group_select"
                         :options="group_options"
                         v-model="group"
-                        placeholder="Group"/>
+                        placeholder="Группа"/>
         </div>
         <div class="form-group">
           <model-select required
                         ref="snp_select"
                         :options="snp_options"
                         v-model="snp"
-                        placeholder="Surname Name Patronymic"/>
+                        placeholder="Фамилия Имя Отчество"/>
         </div>
         <div class="form-group">
-          <input type="password" required class="form-control" placeholder="Password" v-model="password">
+          <input type="password" required class="form-control" placeholder="Пароль" v-model="password">
         </div>
-        <button type="submit" class="btn btn-black">Submit</button>
+        <button type="submit" class="btn btn-black">Войти</button>
       </form>
     </div>
   </div>
@@ -106,19 +106,19 @@ export default {
             if (this.$store.getters.isLoggedIn) {
               this.$router.push('/');
             } else if (this.$store.state.error) {
-              this.$toast.error(this.$store.state.error);
+              this.$toast.error("Неверный пароль");
               deleteAllCookies();
             } else
               throw new Error('EVERYTHING IS BAD');
           }).catch(err => {
             console.warn(err);
-            this.$toast.warning('Something went wrong. Try to reload the page.')
+            this.$toast.warning('Что-то пошло не так. Попробуйте обновить страницу.')
             deleteAllCookies();
           })
         },
         is_fields_correct: async function () {
           if (!this.institute || !this.group || !this.snp) {
-            this.$toast.error('Fill all fields');
+            this.$toast.error('Заполните все поля');
             return false;
           }
           return true;

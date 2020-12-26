@@ -3,15 +3,15 @@
     <div class="special-login-form">
       <form @submit.prevent="signup">
         <div class="form-group">
-          <input required type="text" class="form-control" placeholder="Username" v-model="login">
+          <input required type="text" class="form-control" placeholder="Логин" v-model="login">
         </div>
         <div class="form-group">
-          <input required type="password" class="form-control" placeholder="Password" v-model="password">
+          <input required type="password" class="form-control" placeholder="Пароль" v-model="password">
         </div>
         <div class="form-group">
-          <input required type="password" class="form-control" placeholder="Retype password" v-model="password_retype">
+          <input required type="password" class="form-control" placeholder="Повторите пароль" v-model="password_retype">
         </div>
-        <button type="submit" class="btn btn-black">Submit</button>
+        <button type="submit" class="btn btn-black">Отправить</button>
       </form>
     </div>
   </div>

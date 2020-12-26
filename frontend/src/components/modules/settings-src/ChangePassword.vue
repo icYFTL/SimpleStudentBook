@@ -1,9 +1,9 @@
 <template>
   <div class="change-password">
-    <h3>Change password</h3>
-    <input type="password" placeholder="Password" v-model="password">
-    <input type="password" placeholder="Retype password" v-model="retype_password">
-    <button class="btn btn-primary" v-on:click="changePassword">Apply</button>
+    <h3>Смена пароля</h3>
+    <input type="password" placeholder="Новый пароль" v-model="password">
+    <input type="password" placeholder="Повторите пароль" v-model="retype_password">
+    <button class="btn btn-primary" v-on:click="changePassword">Применить</button>
   </div>
 </template>
 
@@ -21,12 +21,12 @@ export default {
   methods:{
     changePassword: async function (){
       if (this.password !== this.retype_password) {
-        this.$toast.error('Passwords do not match');
+        this.$toast.error('Пароли не сходятся');
         return false;
       }
 
       if (this.password.length < 7 || this.password.length > 30){
-        this.$toast.error('Invalid password length');
+        this.$toast.error('Неверная длина пароля');
         return false;
       }
 
@@ -37,7 +37,7 @@ export default {
         method: 'POST'
       }).then((response) => {
         if (response.data.status){
-          this.$toast.success('Successfully changed');
+          this.$toast.success('Успешно применено!');
           this.password = '';
           this.retype_password = '';
         }

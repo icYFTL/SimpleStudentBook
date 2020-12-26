@@ -2,22 +2,21 @@
     <div>
         <div class="sidenav">
             <div class="login-main-text">
-                <h2>{{app_name}}<br> Login Page</h2>
+                <h2>{{app_name}}<br> Страница авторизации</h2>
                 <p>{{login_page_description}}</p>
             </div>
         </div>
         <div class="main">
             <div class="btn-group switcher" role="group">
                 <button type="button" @click="changeModule('institute')" class="btn btn-default"
-                        v-bind:class="{'switcher_active': computeModule[1] === 0}">Institute
+                        v-bind:class="{'switcher_active': computeModule[1] === 0}">Обычная
                 </button>
                 <button type="button" @click="changeModule('special_login')" class="btn btn-default"
-                        v-bind:class="{'switcher_active': computeModule[1] === 1}">Special
+                        v-bind:class="{'switcher_active': computeModule[1] === 1}">Специальная
                 </button>
             </div>
           <component v-bind:is="computeModule[0]"></component>
-            <a style="margin-top: 10px" href="#" v-on:click="changeModule('special_signup')" v-if="computeModule[1] !== 2">Sign
-                UP</a>
+            <a style="margin-top: 10px" href="#" v-on:click="changeModule('special_signup')" v-if="computeModule[1] !== 2">Не зарегистрированны?</a>
 
         </div>
     </div>
@@ -35,8 +34,8 @@
         data() {
             return {
                 choice: 0,
-                app_name: "Project X",
-                login_page_description: "Make world better!"
+                app_name: "Simple Student Book",
+                login_page_description: "Сделаем мир лучше!"
             }
         },
       methods: {

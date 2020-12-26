@@ -1,8 +1,8 @@
 <template>
   <div class="rating">
     <select class="form-control form-control-lg selector" v-model="rating_choice" :disabled=working>
-      <option value="1">Group rating</option>
-      <option value="2">Global rating</option>
+      <option value="1">Рейтинг группы</option>
+      <option value="2">Глобальный рейтинг</option>
     </select>
     <vue-table-dynamic :params=params class="good-dark-table" ref="table"></vue-table-dynamic>
 
@@ -60,7 +60,7 @@ export default {
       this.working = false;
     },
     ratingClear: function () {
-      this.params.data = [['#', 'SNP', 'Average']];
+      this.params.data = [['#', 'ФИО', 'Среднее значение']];
     }
   },
   async mounted() {
