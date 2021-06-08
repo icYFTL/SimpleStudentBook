@@ -94,7 +94,7 @@ export default {
             this.snp_options = _;
           })
         },
-        auth: async function (with_check = true) {
+        auth: async function (with_check = true, verbose = true) {
           if (with_check && !await this.is_fields_correct())
             return;
 
@@ -106,13 +106,15 @@ export default {
             if (this.$store.getters.isLoggedIn) {
               this.$router.push('/');
             } else if (this.$store.state.error) {
-              this.$toast.error(this.$store.state.error);
+              if (verbose)
+                this.$toast.error(this.$store.state.error);
               deleteAllCookies();
             } else
               throw new Error('EVERYTHING IS BAD');
           }).catch(err => {
             console.warn(err);
-            this.$toast.warning('Something went wrong. Try to reload the page.')
+            if (verbose)
+              this.$toast.warning('Something went wrong. Try to reload the page.')
             deleteAllCookies();
           })
         },
@@ -127,7 +129,7 @@ export default {
       },
   async beforeMount() {
     if (document.cookie.includes('PHPSESSID='))
-      await this.auth(false);
+      await this.auth(false, false);
   },
   async mounted() {
     await this.get_institutes();

@@ -97,7 +97,7 @@ if (isset($_GET['method'])) {
                         }
                         elseif ($data['auth_type'] === 'special'){
                             if (isset($data['password']) && isset($data['username']))
-                                echo $auth->auth('special', $data['password'], $data['username'], null);
+                                echo $auth->auth('special', $data['password'], strtolower($data['username']), null);
                             else
                                 die(generate_error_callback('Empty password and(or) id passed'));
                         }
@@ -126,13 +126,13 @@ if (isset($_GET['method'])) {
                         }
                         elseif ($data['signup_type'] === 'special'){
                             if (isset($data['password']) && isset($data['username']))
-                                echo $auth->signup(null, null, null, $data['username'], $data['password'], 'special');
+                                echo $auth->signup(null, null, null, strtolower($data['username']), $data['password'], 'special');
                             else
                                 die(generate_error_callback('Invalid fields passed'));
                         }
                         elseif($data['signup_type'] === 'full'){
                             if (isset($data['username']) && isset($data['surname']) && isset($data['name']) && isset($data['patronymic']) && isset($data['password']))
-                                echo $auth->signup($data['surname'], $data['name'], $data['patronymic'], $data['username'], $data['password'], 'full');
+                                echo $auth->signup($data['surname'], $data['name'], $data['patronymic'], strtolower($data['username']), $data['password'], 'full');
                             else
                                 die(generate_error_callback('Invalid fields passed'));
                         }
