@@ -106,17 +106,16 @@
         margin-top: -12%;
         padding: 0 10px;
         overflow: hidden;
-
     }
 
-    @media screen and (max-height: 700px) and (max-width: 768px) {
+    @media (max-width: 768px) {
         .sidenav {
             padding-top: -10%;
             margin-top: -10%;
         }
 
         .main {
-            margin-top: 0;
+            margin-top: 0 !important;
         }
 
     }
