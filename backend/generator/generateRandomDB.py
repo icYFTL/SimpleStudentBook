@@ -1,7 +1,10 @@
 import sqlite3
 from random import randint, shuffle
-import json
 from os import path, remove
+
+if not path.exists('snps.txt'):
+    print('Run snp.py first')
+    exit(-1)
 
 if path.exists('../px.db'):
     if input('Do you really want to re-create the database? (y/n): ').strip().lower() == 'y':
@@ -61,16 +64,14 @@ conn.commit()
 print('Students...')
 # students
 
-names = json.load(open('russian_names.json', 'r', encoding='UTF-8'))
-surnames = json.load(open('russian_surnames.json', 'r', encoding='utf-8-sig'))
+snps = open('snps.txt', 'r', encoding='UTF-8').readlines()
 
 
 def getRandomSNP(count=1):
-    shuffle(names)
-    shuffle(surnames)
+    shuffle(snps)
 
     for i in range(count):
-        yield names[i]['Name'], surnames[i]['Surname'] if names[i]['Sex'] == 'М' else surnames[i]['Surname'] + 'а', 'Павлович' if names[i]['Sex'] == 'М' else 'Павловна'
+        yield snps[i].split()
 
 
 def snpRoutine(i):
