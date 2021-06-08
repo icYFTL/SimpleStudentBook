@@ -50,6 +50,13 @@
         z-index: 0;
     }
 
+    @media (max-width: 768px) {
+        .nav__list a {
+          font-size: 2.5em !important;
+        }
+
+    }
+
     .nav__list {
         overflow: hidden;
         position: absolute;
